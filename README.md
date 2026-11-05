@@ -81,7 +81,7 @@ This follows the logic of Applied Information Economics. Before adding a forecas
 
 ## 5. Evaluation
 
-The evaluation compares the three policies on 180 generated Traces and says nothing about real elevator traffic. I evaluate the policies with a paired Monte Carlo experiment. For each demand pattern and seed, the generator creates one Trace and all three policies run on that same Trace, so the comparison is paired rather than made on different random demand.
+The evaluation compares the three policies on 180 generated Traces. I evaluate the policies with a paired Monte Carlo experiment. For each demand pattern and seed, the generator creates one Trace and all three policies run on that same Trace, so the comparison is paired rather than made on different random demand.
 
 The fixed Experiment is defined in [experiments/default.json](experiments/default.json). Its parameters were fixed before the committed benchmark evidence was generated.
 
@@ -151,7 +151,7 @@ A killed run resumes from its checkpoint and finishes with output identical to a
 
 The witness test starts a run, checkpoints at tick 12 and terminates the process with a kill signal. A fresh process resumes from the document. The test checks that the resumed process executes ticks 12 onward without replaying earlier ticks, that its Simulation History and all eight output files match an uninterrupted run byte for byte, that the operational log is one continuous sequence, and that a finished run cannot be reopened. The witness passes for Round Robin and Cost Based.
 
-The evidence covers a Store on a local disk and processes on one machine. It does not cover networked storage or multiple writers. The reasoning behind this kind of claim is in [my article on what is still true after a process dies](https://reckoningmachines.substack.com/p/what-is-still-true-after-the-process).
+The evidence covers a Store on a local disk and processes on one machine. The reasoning behind this kind of claim is in [my article on what is still true after a process dies](https://reckoningmachines.substack.com/p/what-is-still-true-after-the-process).
 
 ## 10. Web demo
 
@@ -213,7 +213,7 @@ Zero door time and synthetic demand are the two simplifications that most limit 
 - Floors are numbered from 0. A request whose origin equals its destination is refused.
 - Opening doors and loading take no time. A stop costs nothing beyond the ticks spent travelling.
 - The dispatcher reacts to requests as they arrive and does not forecast demand.
-- Cost Based is a heuristic with fixed weights. I make no optimality claim.
+- Cost Based is a heuristic with fixed weights.
 - The demand patterns are synthetic and were chosen before the evaluation. The results compare policies and do not predict a real building.
 - Continuity uses a local Store on one machine, with one document per execution and no database.
 

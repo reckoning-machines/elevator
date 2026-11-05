@@ -36,8 +36,6 @@ Show the pairing diagram.
 
 Use the table in the README. Cost Based has the lowest p95 wait in eight of nine patterns. In the sparse pattern it matches Nearest Car on all 20 seeds. Nearest Car has a lower mean wait than Round Robin on the uniform pattern and a higher p95 wait, which is why I report the tail next to the mean. Capacity stress is the closest comparison with Round Robin, with a mean p95 difference of -0.2 ticks, and Cost Based has a lower maximum wait on all 20 seeds there. Concentrated origin is the pattern where Cost Based loses seeds to Round Robin.
 
-Say plainly that the benchmark compares policies and does not describe a real building.
-
 ## 6. Calibration (3 minutes)
 
 Walk through the committed case. Passenger r0 is projected to board at tick 6 and arrive at tick 7. A later passenger is assigned to the same car, the route changes, and r0 boards at tick 16 and arrives at tick 17. The errors are +10 and +10. The first projection was exact for what the policy knew, and the error comes from information that arrived afterward.
