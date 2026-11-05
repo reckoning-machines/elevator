@@ -69,7 +69,7 @@ The car boards p0 at floor 0 and is full. At tick 2 it passes floor 2 going up, 
 
 Round Robin and Nearest Car compute their answer directly from the SchedulerView. Cost Based builds a projection for each car.
 
-A projection plays the car forward under the movement rules with the passengers it already has, and with a new passenger added. It gives the tick at which each passenger boards and exits. The engine and the projection call the same direction and boarding functions, so the projection is exact for the assignments already made.
+A projection plays the car forward under the movement rules with the passengers it already has, and with a new passenger added. It gives the tick at which each passenger boards and exits. The engine and the projection call the same direction and boarding functions, so the projection is exact for the current committed state. Later assignments can change the route, which calibration measures.
 
 ```mermaid
 flowchart TD

@@ -55,7 +55,7 @@ Round Robin assigns passenger `p` to car `p mod N`, where `N` is the number of c
 
 Nearest Car assigns the car whose floor is closest to the passenger's origin and breaks ties by lowest id. It ignores load and direction.
 
-For each car, Cost Based projects the committed route twice, once without the new passenger and once with them. The projection calls the same movement functions as the engine, so it is exact for the passengers already assigned. The score combines the candidate's projected wait, a penalty on waits longer than one full sweep, and the signed change in dropoff times for passengers already assigned to that car. Each of those dropoff changes is weighted by how long that passenger has already waited.
+For each car, Cost Based projects the committed route twice, once without the new passenger and once with them. The projection calls the same movement functions as the engine, so it is exact for the current committed state. Later assignments can change the route, which is what the calibration section measures. The score combines the candidate's projected wait, a penalty on waits longer than one full sweep, and the signed change in dropoff times for passengers already assigned to that car. Each of those dropoff changes is weighted by how long that passenger has already waited.
 
 ```text
 cost = age_scale * (w_wait * wait + w_tail * max(0, wait - tail_threshold)) + w_marginal * marginal
@@ -75,7 +75,7 @@ The scheduler does not forecast future demand. At assignment time it sees only t
 
 ## 5. Evaluation
 
-The fixed Experiment is defined in [experiments/default.json](experiments/default.json) and was fixed before any result was generated.
+The fixed Experiment is defined in [experiments/default.json](experiments/default.json). Its parameters were fixed before the committed benchmark evidence was generated.
 
 - The building has 20 floors, 4 cars and capacity 8, and all cars start at floor 0.
 - Demand comes in nine patterns with 100 requests each. The patterns are uniform, up peak, down peak, bursty, concentrated origin, concentrated destination, capacity stress, sparse and adversarial.
@@ -214,4 +214,4 @@ Approximately 5 hours, including implementation, testing, evaluation, and docume
 
 [docs/design.md](docs/design.md) explains the rules and the decision flow with diagrams and worked examples. [docs/walkthrough.md](docs/walkthrough.md) is the presentation outline. [docs/README.md](docs/README.md) indexes the evidence and the development record.
 
-I used Claude Code during development for implementation, testing, and code review. I made the design decisions and reviewed the resulting code and evidence.
+I used Claude Code for implementation, testing, and code review. I made the design decisions and reviewed the resulting code and evidence.

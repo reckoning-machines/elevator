@@ -20,7 +20,7 @@ Show the tick diagram and the end-of-sweep example in `docs/design.md`.
 
 ## 3. Scheduler design (4 minutes)
 
-Round Robin and Nearest Car are the baselines. Cost Based projects each car's route with and without the new passenger. The projection uses the same movement functions as the engine, so it is exact for passengers already assigned. The cost combines the new passenger's wait, a penalty on waits longer than one sweep, and the effect on passengers already assigned. A car that creates a new capacity deferral is considered only if every car would.
+Round Robin and Nearest Car are the baselines. Cost Based projects each car's route with and without the new passenger. The projection uses the same movement functions as the engine, so it is exact for the current committed state. Later assignments can change the route, which the calibration section measures. The cost combines the new passenger's wait, a penalty on waits longer than one sweep, and the effect on passengers already assigned. A car that creates a new capacity deferral is considered only if every car would.
 
 The policy proposes and the engine commits. A policy cannot change state, cannot see the future and keeps nothing between calls.
 
