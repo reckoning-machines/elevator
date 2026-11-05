@@ -208,13 +208,13 @@ Approximately 7 hours, including implementation, testing, evaluation, and docume
 
 ## 13. Assumptions and tradeoffs
 
-Zero door time and synthetic demand are the two simplifications that most limit what the results say about a real building.
+Zero door time and synthetic demand are the two main simplifications.
 
 - Floors are numbered from 0. A request whose origin equals its destination is refused.
 - Opening doors and loading take no time. A stop costs nothing beyond the ticks spent travelling.
 - The dispatcher reacts to requests as they arrive and does not forecast demand.
 - Cost Based is a heuristic with fixed weights.
-- The demand patterns are synthetic and were chosen before the evaluation. The results compare policies and do not predict a real building.
+- The demand patterns are synthetic and were chosen before the evaluation.
 - Continuity uses a local Store on one machine, with one document per execution and no database.
 
 ## 14. Next steps
