@@ -147,7 +147,8 @@ def test_public_text_follows_the_style_rules():
         prose = prose_of(body)
         assert ";" not in prose and ":" not in prose, f"{doc} uses a semicolon or colon in prose"
         assert "--" not in prose, doc  # no dash punctuation
-    readme = text("README.md")
+    readme = prose_of(text("README.md"))  # link targets are not prose
     for process_word in ("Revision 7", "owner decision", "constitution", "Constitutional"):
         assert process_word not in readme, process_word
+    readme = text("README.md")
     assert re.search(r"^## 1\. Problem", readme, re.M) and readme.index("web_demo.png") < readme.index("## 3. Architecture")

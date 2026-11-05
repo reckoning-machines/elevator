@@ -229,4 +229,4 @@ Zero door time and synthetic demand are the two simplifications that most limit 
 
 [docs/design.md](docs/design.md) explains the rules and the decision flow with diagrams and worked examples. [docs/walkthrough.md](docs/walkthrough.md) is the presentation outline. [docs/README.md](docs/README.md) indexes the evidence and the development record.
 
-I used Claude Code for implementation, testing, and code review. I made the design decisions and reviewed the resulting code and evidence.
+I used Claude Code for implementation, testing, and code review. I made the design decisions and reviewed the resulting code and evidence. The approach I follow is described in [my write-up on agentic coding](https://reckoningmachines.substack.com/p/an-agentic-coding-proposal-constitutional).
