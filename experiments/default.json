@@ -1,0 +1,102 @@
+{
+ "configuration": {
+  "num_floors": 20,
+  "num_elevators": 4,
+  "capacity": 8,
+  "initial_floors": [
+   0,
+   0,
+   0,
+   0
+  ]
+ },
+ "scenarios": [
+  {
+   "pattern": "uniform",
+   "parameters": {
+    "num_requests": 100,
+    "horizon": 1000
+   }
+  },
+  {
+   "pattern": "up_peak",
+   "parameters": {
+    "num_requests": 100,
+    "horizon": 1000
+   }
+  },
+  {
+   "pattern": "down_peak",
+   "parameters": {
+    "num_requests": 100,
+    "horizon": 1000
+   }
+  },
+  {
+   "pattern": "bursty",
+   "parameters": {
+    "num_requests": 100,
+    "horizon": 1000
+   }
+  },
+  {
+   "pattern": "concentrated_origin",
+   "parameters": {
+    "num_requests": 100,
+    "horizon": 1000
+   }
+  },
+  {
+   "pattern": "concentrated_destination",
+   "parameters": {
+    "num_requests": 100,
+    "horizon": 1000
+   }
+  },
+  {
+   "pattern": "capacity_stress",
+   "parameters": {
+    "num_requests": 100
+   }
+  },
+  {
+   "pattern": "sparse",
+   "parameters": {
+    "num_requests": 100
+   }
+  },
+  {
+   "pattern": "adversarial",
+   "parameters": {
+    "num_requests": 100
+   }
+  }
+ ],
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19
+ ],
+ "policies": [
+  "round_robin",
+  "nearest_car",
+  "cost_based"
+ ]
+}

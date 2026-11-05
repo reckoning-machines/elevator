@@ -1,0 +1,9 @@
+{"elevator_id":null,"floor":null,"halt":null,"kind":"REVEALED","passenger_id":0,"receipt":null,"seq":0,"tick":0}
+{"elevator_id":null,"floor":null,"halt":null,"kind":"REVEALED","passenger_id":1,"receipt":null,"seq":1,"tick":0}
+{"elevator_id":0,"floor":null,"halt":null,"kind":"ASSIGNED","passenger_id":0,"receipt":{"candidates":[{"E":0,"cost":0,"deferred_c":false,"marginal":0,"newly_deferred_others":[],"tier":1,"wait_c":0,"wrong_way_passes_c":0}],"chosen":0,"cost":0,"policy":"cost_based","projected_dropoff":4,"projected_pickup":0,"tier":1},"seq":2,"tick":0}
+{"elevator_id":0,"floor":null,"halt":null,"kind":"ASSIGNED","passenger_id":1,"receipt":{"candidates":[{"E":0,"cost":24,"deferred_c":true,"marginal":0,"newly_deferred_others":[],"tier":2,"wait_c":6,"wrong_way_passes_c":0}],"chosen":0,"cost":24,"policy":"cost_based","projected_dropoff":8,"projected_pickup":6,"tier":2},"seq":3,"tick":0}
+{"elevator_id":0,"floor":0,"halt":null,"kind":"BOARDED","passenger_id":0,"receipt":null,"seq":4,"tick":0}
+{"elevator_id":0,"floor":4,"halt":null,"kind":"ALIGHTED","passenger_id":0,"receipt":null,"seq":5,"tick":4}
+{"elevator_id":0,"floor":2,"halt":null,"kind":"BOARDED","passenger_id":1,"receipt":null,"seq":6,"tick":6}
+{"elevator_id":0,"floor":4,"halt":null,"kind":"ALIGHTED","passenger_id":1,"receipt":null,"seq":7,"tick":8}
+{"elevator_id":null,"floor":null,"halt":null,"kind":"COMPLETED","passenger_id":null,"receipt":null,"seq":8,"tick":8}

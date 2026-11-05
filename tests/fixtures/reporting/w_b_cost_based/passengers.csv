@@ -1,0 +1,3 @@
+passenger_id,source_id,request_time,origin,destination,elevator,assigned_at,pickup_time,dropoff_time,wait_time,travel_time,total_time,capacity_deferrals,wrong_way_passes,standing
+0,p0,0,0,4,0,0,0,4,0,4,4,0,0,COMPLETED
+1,p1,0,2,4,0,0,6,8,6,2,8,1,0,COMPLETED

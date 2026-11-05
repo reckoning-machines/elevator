@@ -1,0 +1,5 @@
+- Tail ratio (95th-percentile wait / mean wait): 2.000 (p95 6, mean 3.000).
+- Capacity deferrals: 1 passenger(s) were refused boarding for capacity at least once, at floor(s) 2.
+- Longest wait: passenger 1 (source_id "p1") at floor 2, requested at t=0, assigned to elevator 0, waited 6 tick(s); when the request arrived elevator 0 was at floor 0 heading UP with load 1.
+- Idle gap: the longest run of ticks with every elevator idle is 1 tick(s), from t=8 to t=8.
+- Cost-based assignment: 1 of 2 used the Tier 2 fallback (0.500); calibration: 2 of 2 assignments were realized exactly as projected, pickup error min 0 max 0, dropoff error min 0 max 0.

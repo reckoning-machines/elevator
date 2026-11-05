@@ -1,0 +1,8 @@
+{% set r = why.receipt %}
+<p>Passenger #{{ why.passenger_id }} was assigned to car {{ why.elevator }} at t = {{ why.tick }}{% if r.policy %} by <b>{{ r.policy }}</b>{% endif %}.
+{% if r.projected_pickup is defined %} Committed projection: pickup {{ r.projected_pickup }}, dropoff {{ r.projected_dropoff }}.{% endif %}</p>
+{% if r.candidates %}
+<p class="muted">Tier 1 means no new capacity deferral appeared in the projection at assignment; it is not a guarantee. The lowest tier, then the lowest cost, wins.</p>
+<table><tr><th>car</th><th>tier</th><th>projected wait</th><th>marginal impact</th><th>cost</th><th>chosen</th></tr>
+{% for c in r.candidates %}<tr><td>{{ c.E }}</td><td>{{ c.tier }}</td><td>{{ c.wait_c }}</td><td>{{ c.marginal }}</td><td>{{ c.cost }}</td><td>{{ '◀ selected' if c.E == r.chosen else '' }}</td></tr>{% endfor %}</table>
+{% elif r %}<p class="muted">This policy commits no candidate table; its receipt:</p><table>{% for k, v in r.items() %}<tr><td class="l">{{ k }}</td><td class="l">{{ v }}</td></tr>{% endfor %}</table>{% endif %}

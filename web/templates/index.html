@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block body %}
+<h1>Elevator simulation</h1>
+{% if error %}<div class="error"><b>{{ error.reason }}</b>: {{ error.message }}</div>{% endif %}
+<section><h2>New run</h2>
+<form method="post" action="/runs">
+<p><label>Scheduler <select name="policy">{% for k, v in policies.items() %}<option value="{{ k }}"{% if k == 'cost_based' %} selected{% endif %}>{{ v }}</option>{% endfor %}</select></label>
+<label>Floors <input name="floors" value="10" size="3"></label><label>Elevators <input name="elevators" value="3" size="3"></label>
+<label>Capacity <input name="capacity" value="4" size="3"></label></p>
+<p><label><input type="radio" name="source" value="demo" checked> Built-in example (25 requests, a bursty pattern, 10 floors, 3 cars)</label></p>
+<p><label><input type="radio" name="source" value="paste"> Paste requests (<code>time,id,source,dest</code> per line)</label></p>
+<p><textarea name="pasted" rows="5" cols="50" placeholder="0,a,0,5&#10;1,b,7,2"></textarea></p>
+<button type="submit">New run</button></form>
+<p class="muted">A run starts at t = 0 and RUNNING. Step it, play it, or run it to the end; then compare the three schedulers on the same trace.</p></section>
+{% if has_store %}<section><h2>Reopen from the Store</h2>
+{% if executions %}<form method="post" action="/sessions"><select name="execution_id">{% for e in executions %}<option>{{ e }}</option>{% endfor %}</select> <button>Reopen</button></form>
+{% else %}<p class="muted">No checkpointed executions in the Store.</p>{% endif %}</section>{% endif %}
+{% endblock %}

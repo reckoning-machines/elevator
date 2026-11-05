@@ -1,0 +1,14 @@
+[project]
+name = "elevator"
+version = "0.0.1"
+description = "Discrete-time destination-dispatch elevator simulation (take-home)."
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8", "httpx"]
+web = ["fastapi", "jinja2", "uvicorn", "python-multipart"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"

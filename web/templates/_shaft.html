@@ -1,0 +1,8 @@
+{# the building as inline SVG: floors vertically, one column per elevator; every value is the view's #}
+{% set row = 22 %}{% set colw = 76 %}
+<svg width="{{ 40 + view.cars|length * colw }}" height="{{ view.floors * row + 6 }}" role="img" aria-label="elevator positions">
+{% for f in range(view.floors) %}<text x="4" y="{{ (view.floors - 1 - f) * row + 16 }}" font-size="11" fill="#5b6475">{{ f }}</text>
+<line x1="30" x2="{{ 40 + view.cars|length * colw }}" y1="{{ (view.floors - f) * row }}" y2="{{ (view.floors - f) * row }}" stroke="#e1e4ea"/>{% endfor %}
+{% for c in view.cars %}<g><rect x="{{ 36 + loop.index0 * colw }}" y="{{ (view.floors - 1 - c.floor) * row + 2 }}" width="{{ colw - 10 }}" height="{{ row - 4 }}" rx="3" fill="#2b6cb0"/>
+<text x="{{ 42 + loop.index0 * colw }}" y="{{ (view.floors - 1 - c.floor) * row + 16 }}" font-size="11" fill="#fff">{{ c.id }} {% if c.heading == 'UP' %}▲{% elif c.heading == 'DOWN' %}▼{% else %}–{% endif %} {{ c.load }}/{{ view.capacity }}</text></g>{% endfor %}
+</svg>

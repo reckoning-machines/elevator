@@ -1,0 +1,48 @@
+<div id="screen-body">
+<section>
+<h2>{{ policies[policy] }} <span class="badge {{ standing }}">{{ standing }}</span>
+ <span class="muted">t = {{ t }} · {{ config.num_floors }} floors, {{ config.num_elevators }} cars, capacity {{ config.capacity }}</span></h2>
+{% if standing == 'HALTED' %}<div class="error"><b>HALTED</b>{% if outcome.halt_reason %}: {{ outcome.halt_reason }}{% endif %} at tick {{ outcome.final_tick }}. The run did not complete; what follows is its history to that point.</div>{% endif %}
+{% if notice %}<div class="notice">{{ notice }}</div>{% endif %}
+{% if standing == 'RUNNING' %}
+<button hx-post="/sessions/{{ sid }}/step?from_time={{ t }}" hx-target="#screen-body" hx-swap="outerHTML">Step</button>
+{% if playing %}<span hx-post="/sessions/{{ sid }}/step?from_time={{ t }}&play=1" hx-trigger="every 500ms" hx-target="#screen-body" hx-swap="outerHTML"></span>
+<button hx-get="/sessions/{{ sid }}" hx-target="#screen" hx-swap="innerHTML" hx-select="#screen-body">Pause</button>
+{% else %}<button hx-post="/sessions/{{ sid }}/step?from_time={{ t }}&play=1" hx-target="#screen-body" hx-swap="outerHTML">Play</button>{% endif %}
+<button hx-post="/sessions/{{ sid }}/finish" hx-target="#screen-body" hx-swap="outerHTML">Run to end</button>
+{% if can_checkpoint %}<button hx-post="/sessions/{{ sid }}/checkpoint" hx-target="#screen-body" hx-swap="outerHTML">Checkpoint</button>{% endif %}
+{% endif %}
+<button hx-get="/sessions/{{ sid }}/compare" hx-target="#compare" hx-swap="innerHTML">Compare policies</button>
+</section>
+<div class="cols"><section><h3>Elevators at t = {{ t }}</h3>{% set view = view %}{% include "_shaft.html" %}</section>
+<section><h3>Waiting</h3>{% if view.waiting %}<table><tr><th>floor</th><th>#</th><th>to</th><th>car</th></tr>
+{% for w in view.waiting %}<tr><td>{{ w.floor }}</td><td>{{ w.passenger_id }}</td><td>{{ w.destination }}</td><td>{{ w.elevator }}</td></tr>{% endfor %}</table>{% else %}<p class="muted">nobody</p>{% endif %}
+<h3>Onboard</h3>{% for c in view.cars %}<div>car {{ c.id }}: {% for p in c.onboard %}#{{ p.passenger_id }}→{{ p.destination }} {% else %}<span class="muted">empty</span>{% endfor %}</div>{% endfor %}</section></div>
+<section id="why"><h3>Why the latest assignment</h3>{% if why %}{% include "_why.html" %}{% else %}<p class="muted">No assignment yet.</p>{% endif %}</section>
+{% if n_history %}<section><h3>History (recorded ticks 0 to {{ n_history - 1 }})</h3>
+<input type="range" min="0" max="{{ n_history - 1 }}" value="{{ n_history - 1 }}" onchange="htmx.ajax('GET','/sessions/{{ sid }}/tick/'+this.value,'#tickview')">
+<div id="tickview" class="muted">Move the slider to see the elevators at a recorded tick.</div></section>{% endif %}
+<div id="compare"></div>
+{% if results %}
+<section><h3>Results</h3>
+{% set s = results.summary %}
+{% if s.wait %}<table><tr><th class="l"></th><th>mean</th><th>median</th><th>p95</th><th>max</th></tr>
+<tr><td class="l">wait</td><td>{{ s.wait.mean }}</td><td>{{ s.wait.median }}</td><td>{{ s.wait.p95 }}</td><td>{{ s.wait.max }}</td></tr>
+<tr><td class="l">total time</td><td>{{ s.total.mean }}</td><td>{{ s.total.median }}</td><td>{{ s.total.p95 }}</td><td>{{ s.total.max }}</td></tr></table>
+<p>completed {{ s.completed }} of {{ s.n }} · capacity deferrals {{ s.deferred.count }} · wrong-way passes {{ s.wrong_way.count }} · makespan {{ s.makespan }}</p>
+{% else %}<p>completed {{ s.completed }} of {{ s.n }} · unserved {{ s.unserved }}. <b>A halted run reports no wait or total-time metrics.</b></p>{% endif %}
+{% if results.histogram %}<h3>Wait times</h3><svg width="{{ 40 + results.histogram|length * 22 }}" height="112" role="img" aria-label="wait-time histogram">
+{% for b in results.histogram %}<rect x="{{ b.x }}" y="{{ b.y }}" width="18" height="{{ b.h }}" fill="#2b6cb0"/><text x="{{ b.x + 9 }}" y="104" font-size="9" text-anchor="middle" fill="#5b6475">{{ b.wait }}</text><text x="{{ b.x + 9 }}" y="{{ b.y - 2 }}" font-size="9" text-anchor="middle">{{ b.count }}</text>{% endfor %}</svg>
+<p class="muted">Passengers (bar height) by ticks waited (label), from the reported wait times.</p>{% endif %}
+<h3>Observations</h3><pre>{{ results.observations }}</pre>
+<h3>Passengers</h3>
+<table>{% for row in results.passengers %}{% if loop.first %}<tr>{% for c in row %}<th>{{ c }}</th>{% endfor %}<th>why</th></tr>
+{% else %}<tr>{% for c in row %}<td>{{ c }}</td>{% endfor %}<td><a href="#why" hx-get="/sessions/{{ sid }}/why/{{ row[0] }}" hx-target="#why" hx-swap="innerHTML">receipt</a></td></tr>{% endif %}{% endfor %}</table>
+{% if results.calibration %}{% set cal = results.calibration %}
+<h3>Calibration of the cost-based projection</h3>
+<p class="muted">Each row compares the projection committed in the assignment's own receipt with what happened. <b>error = realized − projected</b>. A non-zero error is what later assignments to the same car did to the route; this is not demand forecasting.</p>
+{% if cal.summary %}<p>{{ cal.summary.assignments }} assignments, {{ cal.summary.exact }} exact; pickup error {{ cal.summary.pickup_error_min }} to {{ cal.summary.pickup_error_max }}, dropoff error {{ cal.summary.dropoff_error_min }} to {{ cal.summary.dropoff_error_max }}.</p>{% endif %}
+<table><tr><th>#</th><th>car</th><th>proj. pickup</th><th>real pickup</th><th>pickup err</th><th>proj. dropoff</th><th>real dropoff</th><th>dropoff err</th><th>later to same car</th></tr>
+{% for r in cal.rows %}<tr><td>{{ r.passenger_id }}</td><td>{{ r.elevator }}</td><td>{{ r.projected_pickup }}</td><td>{{ r.realized_pickup }}</td><td>{{ r.pickup_error }}</td><td>{{ r.projected_dropoff }}</td><td>{{ r.realized_dropoff }}</td><td>{{ r.dropoff_error }}</td><td>{{ 'yes' if r.later_assignment_to_same_elevator else '' }}</td></tr>{% endfor %}</table>
+{% endif %}</section>{% endif %}
+</div>

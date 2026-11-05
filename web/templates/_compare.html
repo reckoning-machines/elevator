@@ -1,0 +1,4 @@
+<section><h3>The three policies on this trace</h3>
+<p class="muted">Each run used this session's own trace (hash <code>{{ trace_hash[:12] }}</code>, verified against the session before the run), the same building, three runs. This is a comparison on this one trace, not a ranking of the policies; the Experiment page measures many traces.</p>
+<table><tr><th class="l">policy</th><th>standing</th><th>final tick</th>{% for c in columns %}<th>{{ c }}</th>{% endfor %}</tr>
+{% for r in rows %}<tr><td class="l">{{ r.label }}</td><td><span class="badge {{ r.standing }}">{{ r.standing }}</span>{% if r.halt_reason %} {{ r.halt_reason }}{% endif %}</td><td>{{ r.final_tick }}</td>{% for v in r.cells %}<td>{{ v }}</td>{% endfor %}</tr>{% endfor %}</table></section>

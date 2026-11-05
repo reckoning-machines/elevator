@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% block body %}
+<h1>Evaluate</h1>
+{% if error %}<div class="error"><b>{{ error.reason }}</b>: {{ error.message }}</div>{% endif %}
+<p class="muted">Source: {{ source }}. Paired comparison on identical traces and seeds, reported per pattern. A fixture for comparison, not a claim about real elevator traffic.</p>
+<section><h3>Run a small Experiment</h3>
+<form method="post" action="/experiments"><label>Pattern <select name="pattern">{% for p in patterns %}<option>{{ p }}</option>{% endfor %}</select></label>
+<label>Seeds <input name="k" value="3" size="3"> (1 to {{ max_k }})</label><label>Floors <input name="floors" value="20" size="3"></label>
+<label>Elevators <input name="elevators" value="4" size="3"></label><label>Capacity <input name="capacity" value="8" size="3"></label><button>Run</button></form></section>
+<p>Downloads: {% for name, url in downloads %}<a href="{{ url }}">{{ name }}</a> {% endfor %}</p>
+{% if download_note %}<p class="muted">{{ download_note }}</p>{% endif %}
+<p>Building {{ view.building.num_floors }} floors, {{ view.building.num_elevators }} cars, capacity {{ view.building.capacity }}; {{ view.seeds }} seed(s); experiment id <code>{{ view.experiment_execution_id[:12] }}</code>; code identity <code>{{ view.code_identity[:12] }}</code>.</p>
+{% for sc in view.scenarios %}<section><h3>{{ sc.pattern }}</h3>
+<table><tr><th class="l">policy</th>{% for m in view.shown %}<th>{{ m }} mean (defined n)</th>{% endfor %}<th>seeds (K)</th><th>halted</th></tr>
+{% for r in sc.rows %}<tr><td class="l">{{ r.policy }}</td>{% for v in r['values'] %}<td>{{ v.mean }} <span class="muted">(n={{ v.n }})</span></td>{% endfor %}<td>{{ r.K }}</td><td>{{ r.halted }}</td></tr>{% endfor %}</table>
+{% if sc.strip.rows %}<p class="muted">Per-seed p95 wait by policy (each dot is one seed; axis {{ sc.strip.lo }} to {{ sc.strip.hi }}).</p>
+<svg width="420" height="{{ sc.strip.height }}" role="img" aria-label="per-seed p95 wait">
+{% for r in sc.strip.rows %}<text x="0" y="{{ r.y + 4 }}" font-size="10" fill="#5b6475">{{ r.policy[:4] }}</text>{% for x in r.xs %}<circle cx="{{ x + 10 }}" cy="{{ r.y }}" r="3" fill="#2b6cb0" fill-opacity=".6"/>{% endfor %}{% endfor %}</svg>{% endif %}
+{% for p in sc.paired %}<p><b>cost_based against {{ p.baseline }}</b> (paired difference, negative is better for cost_based):</p>
+<table><tr><th class="l">metric</th><th>better</th><th>equal</th><th>worse</th><th>median diff</th><th>n_pairs</th></tr>
+{% for c in p.cells %}<tr><td class="l">{{ c.metric }}</td><td>{{ c.better }}</td><td>{{ c.equal }}</td><td>{{ c.worse }}</td><td>{{ c.median }}</td><td>{{ c.n_pairs }}</td></tr>{% endfor %}</table>{% endfor %}
+</section>{% endfor %}{% endblock %}

@@ -1,0 +1,3 @@
+<div><b>tick {{ k }}</b> <span class="muted">(history, from the recorded TickRecord)</span>
+<div style="margin:6px 0">{% include "_shaft.html" %}</div>
+{% for e in view.events %}<div>{{ e.kind }} #{{ e.passenger_id }} car {{ e.elevator }}{% if e.floor is not none %} floor {{ e.floor }}{% endif %}</div>{% endfor %}</div>

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>{% block title %}Elevator simulation demo{% endblock %}</title>
+<script src="/static/htmx.min.js"></script>
+<style>
+body{font:14px/1.45 system-ui,sans-serif;margin:0;color:#1d2330;background:#f6f7f9}
+header{background:#1d2330;color:#fff;padding:10px 20px}header a{color:#cfd8ea;margin-right:16px;text-decoration:none}
+main{max-width:1100px;margin:0 auto;padding:16px 20px}
+section{background:#fff;border:1px solid #d9dde5;border-radius:6px;padding:12px 16px;margin:12px 0}
+h1,h2,h3{margin:.2em 0 .5em}table{border-collapse:collapse;margin:6px 0}td,th{border:1px solid #d9dde5;padding:3px 8px;text-align:right}
+th{background:#eef0f4}td.l,th.l{text-align:left}label{margin-right:12px}input,select,textarea{font:inherit}
+button{font:inherit;padding:4px 12px;cursor:pointer}.badge{padding:2px 8px;border-radius:10px;color:#fff;font-weight:600}
+.RUNNING{background:#2b6cb0}.COMPLETED{background:#2f855a}.HALTED{background:#c53030}
+.notice{background:#fffbe6;border:1px solid #e6d98a;padding:6px 10px;margin:6px 0}.error{background:#fff0f0;border:1px solid #e0a0a0;padding:6px 10px;margin:6px 0}
+.muted{color:#5b6475}.cols{display:flex;gap:20px;flex-wrap:wrap}pre{white-space:pre-wrap}
+</style></head><body>
+<header><a href="/">Run</a><a href="/evaluate">Evaluate</a><span class="muted">a demonstration over the simulator's own outputs; the browser holds nothing</span></header>
+<main>{% block body %}{% endblock %}</main></body></html>
