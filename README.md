@@ -1,6 +1,8 @@
 # Elevator Dispatch Simulation
 
-This project simulates a bank of elevators serving passengers who give their origin and destination when they request a ride. The dispatcher assigns each passenger to one car at request time and never changes the assignment. Three policies are compared on the same demand. They are Round Robin, Nearest Car, and a cost-based policy that projects each car's route before it chooses.
+This project simulates a bank of elevators serving passengers who give their origin and destination when they request a ride. The dispatcher assigns each passenger to one car at request time and never changes the assignment.
+
+I compare one proposed scheduler against two baselines. Round Robin provides a simple state-blind benchmark. Nearest Car represents the obvious state-aware heuristic. The Cost Based policy goes further by projecting each car's committed route before choosing an assignment.
 
 ![Web demo](docs/images/web_demo.png)
 
@@ -71,9 +73,13 @@ Each assignment stores a receipt with every candidate's tier, wait, marginal ter
 
 ### Why there is no demand forecast
 
-The scheduler does not forecast future demand. At assignment time it sees only the current car state and the passengers already committed. I did not add a forecast because the first question is whether one would change any decision. Section 7 compares each projected pickup and dropoff with what actually happened. If later assignments rarely change those times, a forecast has little to correct. If they often do, a forecast is the next experiment, run on the same Traces.
+The scheduler does not forecast future demand. At assignment time it sees only the current car state and the passengers already committed.
+
+This follows the logic of Applied Information Economics. Before adding a forecasting model, I first measure the uncertainty that matters to the decision. Here that uncertainty is the difference between the route projected at assignment time and what later happens after new requests arrive. Section 7 measures it. If that error is small or rarely changes the preferred assignment, forecasting has little value. If it is large and decision-relevant, forecasting becomes the next experiment, run on the same Traces.
 
 ## 5. Evaluation
+
+I evaluate the policies with a paired Monte Carlo experiment. For each demand pattern and seed, the generator creates one Trace and all three policies run on that same Trace, so the comparison is paired rather than made on different random demand.
 
 The fixed Experiment is defined in [experiments/default.json](experiments/default.json). Its parameters were fixed before the committed benchmark evidence was generated.
 

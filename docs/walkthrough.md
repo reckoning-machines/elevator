@@ -28,7 +28,7 @@ Show the decision flow diagram and the worked example where Nearest Car and Cost
 
 ## 4. Evaluation (3 minutes)
 
-One run proves little, so I generated demand in nine patterns with 20 seeds each and ran all three policies on the same Trace for every pattern and seed. That gives 180 paired seeds and 540 runs, and none halted. I fixed the parameters before any result existed. The generator sits outside the decision path, so a policy sees a request only at its request time.
+One run proves little, so I ran a paired Monte Carlo evaluation. I generated demand in nine patterns with 20 seeds each and ran all three policies on the same Trace for every pattern and seed. That gives 180 paired seeds and 540 runs, and none halted. I fixed the parameters before any result existed. The generator sits outside the decision path, so a policy sees a request only at its request time.
 
 Show the pairing diagram.
 
