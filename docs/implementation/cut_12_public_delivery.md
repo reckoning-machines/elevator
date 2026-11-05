@@ -35,7 +35,7 @@ Every number in the README comes from `experiments/default_experiment_results.js
 
 ## 5. Owner items
 
-The owner supplied the time-spent figure (approximately 5 hours, including implementation, testing, evaluation, and documentation) and the wording of the AI disclosure. `AGENTS.md` now states the final delivery phase and no authorized cut.
+The owner supplied the time-spent figure (approximately 7 hours, including implementation, testing, evaluation, and documentation) and the wording of the AI disclosure. `AGENTS.md` now states the final delivery phase and no authorized cut.
 
 ## 6. Delta and standing
 

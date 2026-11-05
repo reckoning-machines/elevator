@@ -29,7 +29,7 @@ CUT 10: IMPLEMENTED / LOCAL VERIFY PASS / CPOC PASS
 CUT 11: IMPLEMENTED / LOCAL VERIFY PASS   (focused re-audit PASS reported by the owner; Revision 7.5; see cut_11_web_ui.md §10-§13)
 CUT 12: IMPLEMENTED / LOCAL VERIFY PASS   (README, docs/design.md, docs/walkthrough.md, one screenshot; 351 tests; record cut_12_public_delivery.md)
 NEXT ELIGIBLE CUT: NONE — all twelve cuts are implemented
-PROJECT IMPLEMENTATION: COMPLETE at its verified standing (twelve cuts; the cut-10 CPOC witness passed, bounded to the local Store/process model); the README time-spent figure (approximately 5 hours) was supplied by the owner
+PROJECT IMPLEMENTATION: COMPLETE at its verified standing (twelve cuts; the cut-10 CPOC witness passed, bounded to the local Store/process model); the README time-spent figure (approximately 7 hours) was supplied by the owner
 ```
 
 ## 2. Admission (2026-11-05)
@@ -257,4 +257,4 @@ Resolved earlier: C3-I-02's missing halt reason was decided on 2026-11-05 by
 
 ## 9. Next step
 
-None. All twelve cuts are implemented. The owner supplied the time-spent figure (approximately 5 hours) and the AI-disclosure wording for the README. Cut 12 (README, design document, walkthrough, screenshot) was completed on 2026-11-05.
+None. All twelve cuts are implemented. The owner supplied the time-spent figure (approximately 7 hours) and the AI-disclosure wording for the README. Cut 12 (README, design document, walkthrough, screenshot) was completed on 2026-11-05.

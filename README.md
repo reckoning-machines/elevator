@@ -204,7 +204,7 @@ Every command uses `python -B`. The simulation refuses to start with bytecode ca
 
 ## 12. Time spent
 
-Approximately 5 hours, including implementation, testing, evaluation, and documentation.
+Approximately 7 hours, including implementation, testing, evaluation, and documentation.
 
 ## 13. Assumptions and tradeoffs
 

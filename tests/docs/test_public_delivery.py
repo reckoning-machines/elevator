@@ -108,7 +108,7 @@ def test_evidence_the_documents_name_exists():
     assert "docs/images/web_demo.png" in text("README.md")
     for name in ("cut_05_cost_based_scheduler.md", "cut_06_reporting_calibration.md", "cut_10_cpoc_witness.md"):
         assert os.path.exists(os.path.join(ROOT, "docs", "implementation", name))
-    assert "Approximately 5 hours, including implementation, testing, evaluation, and documentation." in text("README.md")
+    assert "Approximately 7 hours, including implementation, testing, evaluation, and documentation." in text("README.md")
 
 
 def test_diagrams_are_the_five_the_documents_promise():
