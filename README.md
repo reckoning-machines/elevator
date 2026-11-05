@@ -12,7 +12,7 @@ The core solution is the simulator and the dispatch policies. The evaluation and
 
 ## 1. Problem
 
-Time advances in whole ticks, and a car moves at most one floor per tick. A request carries a time, a passenger id, an origin floor and a destination floor. The dispatcher assigns it to a car immediately and has no information about requests that have not arrived yet.
+The dispatcher has to pick a car for every request using only what is known when the request arrives. Time advances in whole ticks, and a car moves at most one floor per tick. A request carries a time, a passenger id, an origin floor and a destination floor. The dispatcher assigns it to a car immediately and has no information about requests that have not arrived yet.
 
 Each car has a capacity and a direction of travel. A car can pass a waiting passenger because it is full or heading the other way, and that passenger waits for it to come back. Every passenger must be served eventually. The objective is low wait and low total time, where total time is wait plus travel.
 
@@ -53,6 +53,8 @@ The five parts are the simulation engine, the policies, the evaluation harness, 
 
 ## 4. Scheduling policies
 
+The three policies differ in how much of the car state they use. Round Robin uses none of it, Nearest Car uses car positions, and Cost Based uses the full committed route of every car.
+
 Round Robin assigns passenger `p` to car `p mod N`, where `N` is the number of cars.
 
 Nearest Car assigns the car whose floor is closest to the passenger's origin and breaks ties by lowest id. It ignores load and direction.
@@ -79,7 +81,7 @@ This follows the logic of Applied Information Economics. Before adding a forecas
 
 ## 5. Evaluation
 
-I evaluate the policies with a paired Monte Carlo experiment. For each demand pattern and seed, the generator creates one Trace and all three policies run on that same Trace, so the comparison is paired rather than made on different random demand.
+The evaluation compares the three policies on 180 generated Traces and says nothing about real elevator traffic. I evaluate the policies with a paired Monte Carlo experiment. For each demand pattern and seed, the generator creates one Trace and all three policies run on that same Trace, so the comparison is paired rather than made on different random demand.
 
 The fixed Experiment is defined in [experiments/default.json](experiments/default.json). Its parameters were fixed before the committed benchmark evidence was generated.
 
@@ -90,7 +92,7 @@ The fixed Experiment is defined in [experiments/default.json](experiments/defaul
 
 A paired seed is one generated Trace run under all three policies. The comparison between policies is always made on the same Trace.
 
-The Experiment compares policies on synthetic demand and says nothing about real elevator traffic. The generator produces Traces for the evaluation only, and a policy sees each request at its request time.
+The generator produces Traces for the evaluation only, and a policy sees each request at its request time.
 
 ## 6. Cost Based improves tail wait in most regimes
 
@@ -123,15 +125,17 @@ The screenshot above uses a separate 25-request example. In that example the fin
 
 ## 7. Calibration
 
+In the reporting tests' generated sweep, 947 of 977 cost-based projections matched what happened. The 30 that differed were all on cars that received a later assignment.
+
 Calibration compares what a policy projected at assignment time with what happened. The committed test case has one car with capacity 1 in a 6-floor building, idle at floor 4. Passenger r0 travels from floor 1 to floor 2 and is assigned first. The projection stored with that assignment says r0 boards at tick 6 and arrives at tick 7.
 
 Passenger r1, who travels from floor 0 to floor 5, is then assigned to the same car. The car serves floor 0 first, fills up, rides to floor 5 and comes back for r0. r0 boards at tick 16 and arrives at tick 17, so both errors are +10, where error is realized time minus projected time. The first projection was exact for the state the policy saw. The error comes from a later assignment that changed the route. Passenger r1 had no later assignment to the same car and was served exactly as projected.
 
-The reporting tests run a generated sweep of 977 cost-based assignments. In 374 of them no later assignment went to the same car, and all 374 matched the projection exactly. In the other 603 a later assignment did go to the same car, and 30 of those differed from the projection. The web demo shows the same table for any cost-based run.
+In the sweep, 374 of the 977 assignments had no later assignment to the same car, and all 374 matched the projection exactly. The other 603 had a later assignment to the same car, and 30 of those differed from the projection. The web demo shows the same table for any cost-based run.
 
 ## 8. Correctness
 
-The tests cover the rules that the results depend on.
+The suite has 351 tests, and they check the rules that the results depend on.
 
 - The engine and the cost-based policy call the same route functions. A test checks that a projection equals the realized outcome when no later assignment touches that car.
 - A no-look-ahead test adds a request after the decision time and checks that every decision and movement before that time is unchanged.
@@ -140,17 +144,18 @@ The tests cover the rules that the results depend on.
 - Two runs of the same inputs, including runs in separate processes, produce byte-identical output files.
 - Edge cases include full cars, wrong-way passes, a car pulled in opposite directions by two passengers, simultaneous requests, requests that skip ahead in time, and empty Traces.
 
-The suite has 351 tests.
 
 ## 9. Restart continuity
 
-A run can write a checkpoint, the process can be killed, and a new process can resume from the saved state. The checkpoint is one document holding a Snapshot of the state at a tick boundary and the Simulation History so far.
+A killed run resumes from its checkpoint and finishes with output identical to an uninterrupted run. The checkpoint is one document holding a Snapshot of the state at a tick boundary and the Simulation History so far.
 
 The witness test starts a run, checkpoints at tick 12 and terminates the process with a kill signal. A fresh process resumes from the document. The test checks that the resumed process executes ticks 12 onward without replaying earlier ticks, that its Simulation History and all eight output files match an uninterrupted run byte for byte, that the operational log is one continuous sequence, and that a finished run cannot be reopened. The witness passes for Round Robin and Cost Based.
 
 The evidence covers a Store on a local disk and processes on one machine. It does not cover networked storage or multiple writers.
 
 ## 10. Web demo
+
+The demo shows one run in detail and compares the three policies on the same Trace.
 
 ```text
 python -B -m web
@@ -202,6 +207,8 @@ Every command uses `python -B`. The simulation refuses to start with bytecode ca
 Approximately 5 hours, including implementation, testing, evaluation, and documentation.
 
 ## 13. Assumptions and tradeoffs
+
+Zero door time and synthetic demand are the two simplifications that most limit what the results say about a real building.
 
 - Floors are numbered from 0. A request whose origin equals its destination is refused.
 - Opening doors and loading take no time. A stop costs nothing beyond the ticks spent travelling.
