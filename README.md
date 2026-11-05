@@ -92,7 +92,11 @@ A paired seed is one generated Trace run under all three policies. The compariso
 
 The Experiment compares policies on synthetic demand and says nothing about real elevator traffic. The generator produces Traces for the evaluation only, and a policy sees each request at its request time.
 
-## 6. Results
+## 6. Cost Based improves tail wait in most regimes
+
+On this synthetic benchmark, Cost Based has the strongest results against Nearest Car. It has a lower p95 wait than Nearest Car on all 20 seeds in eight of nine demand patterns, and the two policies tie on the sparse pattern. Against Round Robin, Cost Based has a lower p95 wait on all 20 seeds in five patterns and a lower mean total time on all 20 seeds in seven.
+
+The result is not uniform. Under capacity stress, Cost Based and Round Robin are nearly tied on p95 wait. Concentrated origin is another pattern where Round Robin wins some seeds. Nearest Car is competitive on mean wait in some patterns and performs poorly on tail wait and under capacity stress.
 
 The committed evidence is [experiments/default_experiment_results.json](experiments/default_experiment_results.json). The table gives the mean over 20 seeds of each run's 95th percentile wait and mean total time, in ticks. RR is Round Robin, NC is Nearest Car and CB is Cost Based.
 
@@ -108,10 +112,8 @@ The committed evidence is [experiments/default_experiment_results.json](experime
 | sparse | 15.500 | 9.850 | 9.850 | 13.791 | 10.222 | 10.222 |
 | adversarial | 45.000 | 40.000 | 28.000 | 44.340 | 38.000 | 32.100 |
 
-The paired differences, Cost Based minus the baseline on the same Trace, show the following.
+The paired differences, Cost Based minus the baseline on the same Trace, add the following detail. In the sparse pattern Cost Based and Nearest Car produce identical results on all 20 seeds.
 
-- Against Nearest Car, Cost Based has a lower p95 wait on all 20 seeds in eight of nine patterns. In the sparse pattern the two policies produce identical results on all 20 seeds.
-- Against Round Robin, Cost Based has a lower p95 wait on all 20 seeds in five patterns and a lower mean total time on all 20 seeds in seven.
 - Capacity stress is the closest comparison with Round Robin. The p95 wait is lower on 8 seeds, equal on 8 and higher on 4, with a mean difference of -0.2 ticks. Cost Based has a lower maximum wait on all 20 seeds, by 13.5 ticks on average.
 - Concentrated origin is the other pattern where Cost Based loses seeds to Round Robin. Its mean total time is higher on 3 of 20.
 - Nearest Car has a lower mean wait than Round Robin on the uniform pattern (5.252 against 7.245) and a higher p95 wait (20.150 against 16.700). I report the tail next to the mean for this reason.
